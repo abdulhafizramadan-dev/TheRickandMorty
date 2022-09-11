@@ -1,9 +1,14 @@
 [versions]
 # Ui Versions
 material = "1.6.1"
-coreKtx = "1.9.0"
+coreKtx = "1.7.0"
 appcompat = "1.5.1"
 constraintlayout = "2.1.4"
+
+epoxy = "5.0.0-beta03"
+roundedImageView = "2.3.0"
+coil = "2.2.1"
+gravitysnaphelper = "2.2.2"
 
 # UnitTest Versions
 junit = "4.13.2"
@@ -18,6 +23,12 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+epoxy = { module = "com.airbnb.android:epoxy", version.ref = "epoxy" }
+epoxyCompiler = { module = "com.airbnb.android:epoxy-processor", version.ref = "epoxy" }
+epoxyDatabinding = { module = "com.airbnb.android:epoxy-databinding", version.ref = "epoxy" }
+roundedImageView = { module = "com.makeramen:roundedimageview", version.ref = "roundedImageView" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+gravitysnaphelper = { module = "com.github.rubensousa:gravitysnaphelper", version.ref = "gravitysnaphelper" }
 
 # UnitTest Dependencies
 junit = { module = "junit:junit", version.ref = "junit" }

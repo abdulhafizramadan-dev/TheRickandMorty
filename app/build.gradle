@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -22,6 +23,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -31,12 +36,24 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
 
     implementation libs.coreKtx
     implementation libs.appcompat
     implementation libs.material
     implementation libs.constraintlayout
+
+    implementation libs.roundedImageView
+    implementation libs.coil
+    implementation libs.gravitysnaphelper
+
+    implementation libs.epoxy
+    kapt libs.epoxyCompiler
+    implementation libs.epoxyDatabinding
 
     testImplementation libs.junit
 
