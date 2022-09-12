@@ -4,14 +4,20 @@ import com.ahr.therickandmorty.domain.entity.Character
 
 object FakeData {
 
-    fun getData(): Map<String, List<Character>> {
-        val mapCharacters = mutableMapOf<String, List<Character>>()
-        mapCharacters["Human"] = getCharacters("Human")
-        mapCharacters["Humanoid"] = getCharacters("Humanoid")
-        mapCharacters["Alien"] = getCharacters("Alien")
-        mapCharacters["Animal"] = getCharacters("Animal")
-        mapCharacters["Robot"] = getCharacters("Robot")
-        return mapCharacters
+    fun getDataForYou(): Map<String, List<Character>> {
+        val mapForYouValue = mutableMapOf<String, List<Character>>()
+        mapForYouValue["Human"] = getCharacters("Human")
+        mapForYouValue["Humanoid"] = getCharacters("Humanoid")
+        mapForYouValue["Alien"] = getCharacters("Alien")
+        mapForYouValue["Robot"] = getCharacters("Robot")
+        mapForYouValue["Poopybutthole"] = getCharacters("Poopybutthole")
+        mapForYouValue["MythologicalCreature"] = getCharacters("Mythological Creature")
+        mapForYouValue["Unknowns"] = getCharacters("Unknowns")
+        return mapForYouValue
+    }
+
+    fun getDataCharacters(species: String): List<Character> {
+        return getCharacters(species)
     }
 
     private fun getCharacters(species: String): List<Character> {
@@ -22,6 +28,7 @@ object FakeData {
                 type = "Genetic experiment",
                 status = "Alive",
                 species = species,
+                gender = "Male",
                 image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
             )
         }

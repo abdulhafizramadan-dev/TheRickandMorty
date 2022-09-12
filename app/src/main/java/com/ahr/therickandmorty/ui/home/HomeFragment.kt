@@ -1,60 +1,123 @@
 package com.ahr.therickandmorty.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.ahr.therickandmorty.R
+import com.ahr.therickandmorty.databinding.FragmentHomeBinding
+import com.ahr.therickandmorty.domain.entity.TabItemCharacter
+import com.ahr.therickandmorty.ui.character.CharacterFragment
+import com.google.android.material.tabs.TabLayout
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    companion object {
+        private const val SELECTED_TAB_POSITION = "active_tab_position"
     }
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return _binding?.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupTabLayout()
+        observeTabLayout()
+
+        if (savedInstanceState == null) {
+            initialSetup()
+        } else {
+            val selectedTabPosition = savedInstanceState.getInt(SELECTED_TAB_POSITION)
+            binding.tabLayout
+            val tab = binding.tabLayout.getTabAt(selectedTabPosition)
+            tab?.select()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val selectedTabPosition = binding.tabLayout.selectedTabPosition
+        outState.putInt(SELECTED_TAB_POSITION, selectedTabPosition)
+    }
+
+    private fun initialSetup() {
+        val bundles = bundleOf(
+            CharacterFragment.EXTRA_IS_FOR_YOU_TYPE to true,
+            CharacterFragment.EXTRA_TAB_ITEM_CHARACTER to getSpecies()[0]
+        )
+        childFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(
+                R.id.fragment_container,
+                CharacterFragment::class.java,
+                bundles
+            )
+        }
+    }
+
+    private fun setupTabLayout() {
+        val titles = getSpecies()
+        titles.forEach {
+            val tab = binding.tabLayout.newTab().apply {
+                text = it.title
+                contentDescription = it.title
             }
+            binding.tabLayout.addTab(tab)
+        }
+    }
+
+    private fun observeTabLayout() {
+        binding.tabLayout.addOnTabSelectedListener(this)
+    }
+
+    private fun getSpecies(): List<TabItemCharacter> {
+        return resources.getStringArray(R.array.species).mapIndexed { index, species ->
+            TabItemCharacter(
+                title = if (index != 0) getString(R.string.format_tab_item, species) else species,
+                species = species
+            )
+        }.toList()
+    }
+
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+        val position = binding.tabLayout.selectedTabPosition
+        val isForYouType = position == 0
+        val bundles = bundleOf(
+            CharacterFragment.EXTRA_IS_FOR_YOU_TYPE to isForYouType,
+            CharacterFragment.EXTRA_TAB_ITEM_CHARACTER to getSpecies()[position]
+        )
+        childFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(
+                R.id.fragment_container,
+                CharacterFragment::class.java,
+                bundles,
+            )
+        }
+    }
+
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+    }
+
+    override fun onTabReselected(tab: TabLayout.Tab?) {
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

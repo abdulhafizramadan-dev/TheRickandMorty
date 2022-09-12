@@ -1,12 +1,12 @@
-package com.ahr.therickandmorty.ui.home
+package com.ahr.therickandmorty.ui.character
 
-import com.ahr.therickandmorty.CharacterBindingModel_
+import com.ahr.therickandmorty.CharacterHorizontalBindingModel_
 import com.ahr.therickandmorty.domain.entity.Character
 import com.ahr.therickandmorty.header
 import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.epoxy.carousel
 
-class HomeEpoxyController : TypedEpoxyController<Map<String, List<Character>>>() {
+class ForYouEpoxyController : TypedEpoxyController<Map<String, List<Character>>>() {
     override fun buildModels(data: Map<String, List<Character>>?) {
         data?.keys?.forEach { title ->
             header {
@@ -14,7 +14,7 @@ class HomeEpoxyController : TypedEpoxyController<Map<String, List<Character>>>()
                 title(title)
             }
             val characters = data[title]?.map { character ->
-                CharacterBindingModel_()
+                CharacterHorizontalBindingModel_()
                     .id(character.id)
                     .character(character)
             }

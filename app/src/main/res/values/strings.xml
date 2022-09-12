@@ -4,4 +4,17 @@
     <string name="see_more">See More</string>
     <string name="format_header_title">%s Characters</string>
     <string name="format_character_status">%s - %s</string>
+    <string name="format_tab_item">%ss</string>
+    <string name="hint_search_character">Search for character</string>
+
+    <string-array name="species">
+        <item>For you</item>
+        <item>Human</item>
+        <item>Humanoid</item>
+        <item>Alien</item>
+        <item>Robot</item>
+        <item>Poopybutthole</item>
+        <item>Mythological Creature</item>
+        <item>Unknown</item>
+    </string-array>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  TextInputLayout.OutlinedBox  -->
+    <style name="Widget.TheRickAndMorty.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearance">@style/ShapeAppearance.TheRickAndMorty.SmallComponent</item>
+    </style>
+
+    <!--  TextAppearance  -->
+    <style name="TextAppearance.TheRickAndMorty.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <!--  ShapeAppearance  -->
+    <style name="ShapeAppearance.TheRickAndMorty.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+</resources>
