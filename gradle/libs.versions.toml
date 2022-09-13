@@ -6,7 +6,11 @@ fragmentKtx = "1.5.2"
 appcompat = "1.5.1"
 constraintlayout = "2.1.4"
 
+hilt = "2.42"
+
 navigationComponent = "2.5.2"
+
+apollo = "3.6.0"
 
 epoxy = "5.0.0-beta03"
 roundedImageView = "2.3.0"
@@ -29,8 +33,13 @@ fragmentKtx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragme
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 
+hiltAndroid = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hiltCompiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+
 navigationFragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigationComponent" }
 navigationUi = { module = "androidx.navigation:navigation-ui", version.ref = "navigationComponent" }
+
+apollo = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 
 epoxy = { module = "com.airbnb.android:epoxy", version.ref = "epoxy" }
 epoxyCompiler = { module = "com.airbnb.android:epoxy-processor", version.ref = "epoxy" }

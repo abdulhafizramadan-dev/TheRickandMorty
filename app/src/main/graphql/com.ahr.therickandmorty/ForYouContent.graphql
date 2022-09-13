@@ -1,0 +1,62 @@
+query ForYouContent {
+    human: characters(filter: {species: "Human"}) {
+        results {
+            id
+            name
+            type
+            status
+            species
+            image
+        }
+    }
+    humanoid: characters(filter: {species: "Humanoid"}) {
+        results {
+            id
+            name
+            type
+            status
+            species
+            image
+        }
+    }
+    alien: characters(filter: {species: "Alien"}) {
+        results {
+            id
+            name
+            type
+            status
+            species
+            image
+        }
+    }
+    robot: characters(filter: {species: "Robot"}) {
+        results {
+            id
+            name
+            type
+            status
+            species
+            image
+        }
+    }
+    poopybutthole: characters(filter: {species: "Poopybutthole"}) {
+        results {
+            id
+            name
+            type
+            status
+            species
+            image
+        }
+    }
+    Unknown: characters(filter: {species: "Unknown"}) {
+        results {
+            id
+            name
+            type
+            status
+            species
+            image
+        }
+    }
+}

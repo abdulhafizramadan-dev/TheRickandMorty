@@ -22,4 +22,8 @@
     <color name="secondaryTextColor">@color/white</color>
 
     <color name="textCaption">@color/gray_700</color>
+
+    <color name="status_alive">#00FC74</color>
+    <color name="status_dead">#D63D2E</color>
+    <color name="status_unknown">#3F4247</color>
 </resources>

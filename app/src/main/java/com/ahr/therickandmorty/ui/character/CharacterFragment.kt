@@ -1,32 +1,36 @@
 package com.ahr.therickandmorty.ui.character
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.ahr.therickandmorty.databinding.FragmentCharacterBinding
+import com.ahr.therickandmorty.domain.Response
 import com.ahr.therickandmorty.domain.entity.TabItemCharacter
-import com.ahr.therickandmorty.helper.FakeData
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterFragment : Fragment() {
 
     companion object {
         const val EXTRA_IS_FOR_YOU_TYPE = "extra_is_for_you_type"
         const val EXTRA_TAB_ITEM_CHARACTER = "extra_tab_item_character"
+        const val EXTRA_SPECIES = "extra_species"
+        private const val TAG = "CharacterFragment"
     }
 
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
 
-    private val isForYouType: Boolean by lazy {
-        arguments?.getBoolean(EXTRA_IS_FOR_YOU_TYPE) ?: false
-    }
-    private val tabItemCharacter: TabItemCharacter? by lazy {
-        arguments?.getParcelable(EXTRA_TAB_ITEM_CHARACTER)
+    private val characterViewModel: CharacterViewModel by viewModels()
+
+    private val species: String? by lazy {
+        arguments?.getString(EXTRA_SPECIES)
     }
 
-    private lateinit var forYouEpoxyController: ForYouEpoxyController
     private lateinit var characterEpoxyController: CharacterEpoxyController
 
     override fun onCreateView(
@@ -40,29 +44,31 @@ class CharacterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (isForYouType) {
-            setupForYouController()
-        } else {
-            setupCharacterController()
-        }
+        characterViewModel.getCharacterList(species)
+        setupCharacterController()
+        observeCharacterList()
     }
 
-    private fun setupForYouController() {
-        forYouEpoxyController = ForYouEpoxyController()
-        binding.epoxyRecyclerView.setController(forYouEpoxyController)
-        forYouEpoxyController.setData(FakeData.getDataForYou())
-    }
 
     private fun setupCharacterController() {
-        binding.epoxyRecyclerView.setPadding(0, 8, 0, 8)
-        binding.epoxyRecyclerView.clipToPadding = false
         characterEpoxyController = CharacterEpoxyController()
-        binding.epoxyRecyclerView.setController(characterEpoxyController)
-        characterEpoxyController.setData(tabItemCharacter?.species?.let {
-            FakeData.getDataCharacters(
-                it
-            )
-        })
+        binding.epoxyCharacter.setController(characterEpoxyController)
+    }
+
+    private fun observeCharacterList() {
+        characterViewModel.characterList.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Response.Loading -> {
+                    Log.d(TAG, "observeCharacterList: Loading")
+                }
+                is Response.Success -> {
+                    characterEpoxyController.setData(response.data)
+                }
+                is Response.Error -> {
+                    Log.d(TAG, "observeCharacterList: Error=${response.message}")
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

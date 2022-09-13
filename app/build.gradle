@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id "com.apollographql.apollo3" version "3.6.0"
 }
 
 android {
@@ -41,6 +43,10 @@ kapt {
     correctErrorTypes = true
 }
 
+apollo {
+    packageName.set("com.ahr.therickandmorty")
+}
+
 dependencies {
 
     implementation libs.bundles.ktx
@@ -49,6 +55,11 @@ dependencies {
     implementation libs.appcompat
     implementation libs.material
     implementation libs.constraintlayout
+
+    implementation libs.hiltAndroid
+    kapt libs.hiltCompiler
+
+    implementation libs.apollo
 
     implementation libs.roundedImageView
     implementation libs.coil

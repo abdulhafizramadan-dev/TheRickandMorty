@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.ahr.therickandmorty.R
 import com.ahr.therickandmorty.databinding.FragmentHomeBinding
-import com.ahr.therickandmorty.domain.entity.TabItemCharacter
 import com.ahr.therickandmorty.ui.character.CharacterFragment
+import com.ahr.therickandmorty.ui.foryou.ForYouFragment
 import com.google.android.material.tabs.TabLayout
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
 
     companion object {
@@ -53,26 +56,19 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
     }
 
     private fun initialSetup() {
-        val bundles = bundleOf(
-            CharacterFragment.EXTRA_IS_FOR_YOU_TYPE to true,
-            CharacterFragment.EXTRA_TAB_ITEM_CHARACTER to getSpecies()[0]
-        )
         childFragmentManager.commit {
             setReorderingAllowed(true)
-            replace(
-                R.id.fragment_container,
-                CharacterFragment::class.java,
-                bundles
-            )
+            replace<ForYouFragment>(R.id.fragment_container)
         }
     }
 
     private fun setupTabLayout() {
         val titles = getSpecies()
-        titles.forEach {
+        titles.forEachIndexed { index, title ->
+            val tabTitleFormat = if (index != 0) getString(R.string.format_tab_item, title) else title
             val tab = binding.tabLayout.newTab().apply {
-                text = it.title
-                contentDescription = it.title
+                text = tabTitleFormat
+                contentDescription = tabTitleFormat
             }
             binding.tabLayout.addTab(tab)
         }
@@ -82,27 +78,21 @@ class HomeFragment : Fragment(), TabLayout.OnTabSelectedListener {
         binding.tabLayout.addOnTabSelectedListener(this)
     }
 
-    private fun getSpecies(): List<TabItemCharacter> {
-        return resources.getStringArray(R.array.species).mapIndexed { index, species ->
-            TabItemCharacter(
-                title = if (index != 0) getString(R.string.format_tab_item, species) else species,
-                species = species
-            )
-        }.toList()
+    private fun getSpecies(): List<String> {
+        return resources.getStringArray(R.array.species).toList()
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
         val position = binding.tabLayout.selectedTabPosition
         val isForYouType = position == 0
-        val bundles = bundleOf(
-            CharacterFragment.EXTRA_IS_FOR_YOU_TYPE to isForYouType,
-            CharacterFragment.EXTRA_TAB_ITEM_CHARACTER to getSpecies()[position]
-        )
+        val fragment = if (isForYouType) ForYouFragment::class.java else CharacterFragment::class.java
+        val species = getSpecies()[position]
+        val bundles = bundleOf(CharacterFragment.EXTRA_SPECIES to species)
         childFragmentManager.commit {
             setReorderingAllowed(true)
             replace(
                 R.id.fragment_container,
-                CharacterFragment::class.java,
+                fragment,
                 bundles,
             )
         }
